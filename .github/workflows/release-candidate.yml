@@ -1,0 +1,53 @@
+name: Mobile release candidate
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, synchronize, labeled, unlabeled, ready_for_review]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mobile-release-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  EXPO_PUBLIC_SUPABASE_URL: https://bdeajozhylypiidrldka.supabase.co
+  EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY: sb_publishable_FX7QKUBZQmwykGcgv8SdfQ_lGRZF8n2
+
+jobs:
+  android-release-candidate:
+    if: ${{ github.event_name == 'workflow_dispatch' || (github.head_ref == 'develop' && contains(github.event.pull_request.labels.*.name, 'production-approved')) }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+      - name: Validate TypeScript
+        run: npm run typecheck
+      - name: Validate Expo dependency compatibility
+        run: npx expo install --check
+      - name: Generate native Android project
+        run: EXPO_NO_GIT_STATUS=1 npx expo prebuild --platform android --clean --no-install
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - name: Build release APK
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleRelease --no-daemon
+      - name: Upload release-candidate APK
+        uses: actions/upload-artifact@v5
+        with:
+          name: FrankiFlow-Admin-release-candidate-${{ github.run_id }}
+          path: android/app/build/outputs/apk/release/app-release.apk
+          if-no-files-found: error
+          retention-days: 14
