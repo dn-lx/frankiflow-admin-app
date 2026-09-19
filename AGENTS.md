@@ -28,3 +28,7 @@ npm run doctor
 Use the existing GitHub Android workflow for APK/build verification and emulator launch smoke tests when Android behavior changes. For iOS-specific behavior, use an iOS simulator or EAS/device testing when available and report any limitation clearly.
 
 For release work, follow the stricter release checks in the Release Workflow skill.
+
+## Testing and security efficiency
+
+Before changing CI, adding tests, reviewing release readiness, or choosing test scope, read and follow [Quality Gates](.agents/skills/quality-gates/SKILL.md). Use fast validation for ordinary PRs and reserve the heavier release matrix for `develop → main`.
