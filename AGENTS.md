@@ -32,3 +32,7 @@ For release work, follow the stricter release checks in the Release Workflow ski
 ## Testing and security efficiency
 
 Before changing CI, adding tests, reviewing release readiness, or choosing test scope, read and follow [Quality Gates](.agents/skills/quality-gates/SKILL.md). Use fast validation for ordinary PRs and reserve the heavier release matrix for `develop → main`.
+
+## Engineering integrations
+
+Use [Engineering Integrations](docs/ENGINEERING-INTEGRATIONS.md) as the current inventory for coding, testing, security, deployment and observability tools. Prefer active integrations listed there; do not reintroduce retired scaffolds without a concrete requirement.
