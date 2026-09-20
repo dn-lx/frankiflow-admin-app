@@ -6,6 +6,8 @@ Use `develop` as the integration branch. Start implementation work from `develop
 
 Before any branch, PR, release, hotfix, deployment, or production operation, read and follow [Release Workflow](.agents/skills/release-workflow/SKILL.md).
 
+Use [Release Readiness](.agents/skills/release-readiness/SKILL.md) before a production release review and [Mobile Security Review](.agents/skills/mobile-security-review/SKILL.md) for authentication, storage, permissions or Supabase changes.
+
 The production rule is strict: **only this repository's `develop` branch may merge into `main`**. A `develop → main` production PR requires the `production-approved` label and required checks. Never merge a feature/fix/chore branch directly into `main`, never push directly to `main`, and never force-push `main`.
 
 ## Application boundaries

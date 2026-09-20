@@ -23,7 +23,8 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: "22"
-      - name: Install dependencies
-        run: npm install --ignore-scripts --no-audit --no-fund
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
       - name: TypeScript validation
         run: npm run typecheck
